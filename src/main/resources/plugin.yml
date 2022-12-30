@@ -1,0 +1,5 @@
+name: Minigame
+version: '${project.version}'
+main: me.humandavey.minigame.Minigame
+api-version: 1.19
+authors: [ humandavey ]
