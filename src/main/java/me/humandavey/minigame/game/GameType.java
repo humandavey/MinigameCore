@@ -1,12 +1,13 @@
 package me.humandavey.minigame.game;
 
+import me.humandavey.minigame.game.games.WaterClutcherGame;
 import me.humandavey.minigame.instance.Arena;
 
 import java.lang.reflect.InvocationTargetException;
 
 public enum GameType {
 
-	;
+	WATERCLUTCHER("WaterClutcher", 2, 8, 8, new String[]{"Try not to die from fall damage", "while being the last player alive!"}, WaterClutcherGame.class);
 
 	private final String display;
 	private final int minTeams;
