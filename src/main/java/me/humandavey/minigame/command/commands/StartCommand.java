@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class StartCommand extends Command {
 
 	public StartCommand() {
-		super("start", new String[]{"forcestart"}, "Start an arena even if start requirements aren't met");
+		super("forcestart", null, "Start an arena even if start requirements aren't met");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class StartCommand extends Command {
 				if (arena != null) {
 					if (arena.getState() == GameState.WAITING || arena.getState() == GameState.COUNTDOWN) {
 						player.sendMessage(Util.colorize("&aStarting arena... Use with caution!"));
-						arena.getCountdown().cancel();
+						arena.getCountdown().setCancel(true);
 						arena.sendTitle(Util.colorize("&aGO!"), "", 0, 20, 15);
 						arena.start();
 					} else {
@@ -42,7 +42,7 @@ public class StartCommand extends Command {
 				if (arena != null) {
 					if (arena.getState() == GameState.WAITING || arena.getState() == GameState.COUNTDOWN) {
 						player.sendMessage(Util.colorize("&aStarting arena... Use with caution!"));
-						arena.getCountdown().cancel();
+						arena.getCountdown().setCancel(true);
 						arena.sendTitle(Util.colorize("&aGO!"), "", 0, 20, 15);
 						arena.start();
 					} else {

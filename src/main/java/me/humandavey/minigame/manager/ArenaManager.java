@@ -12,13 +12,13 @@ import java.util.ArrayList;
 
 public class ArenaManager {
 
-	private ArrayList<Arena> arenas = new ArrayList<>();
+	private final ArrayList<Arena> arenas = new ArrayList<>();
 
 	public ArenaManager() {
 		FileConfiguration config = Minigame.getInstance().getConfig();
 
 		for (String s : config.getConfigurationSection("arenas").getKeys(false)) {
-			arenas.add(new Arena(Integer.parseInt(s), Util.configToLocation(config, "arenas." + s), GameType.valueOf(config.getString("arenas." + s + ".game"))));
+			arenas.add(new Arena(Integer.parseInt(s), Util.configToLocation(config, "arenas." + s), GameType.valueOf(config.getString("arenas." + s + ".game").toUpperCase())));
 		}
 	}
 

@@ -61,7 +61,9 @@ public class Arena {
 			teams.clear();
 			spectators.clear();
 		}
-		countdown.cancel();
+		if (countdown.isRunning()) {
+			countdown.cancel();
+		}
 		countdown = new Countdown(this);
 		game.unregister();
 		game = gameType.getNewInstance(this);
@@ -140,10 +142,45 @@ public class Arena {
 		return te;
 	}
 
-	public void setSpectator(Player player) {
+	public ArrayList<Team> getAliveTeams() {
+		ArrayList<Team> te = new ArrayList<>();
+		for (Team team : Team.values()) {
+			for (Player player : getPlayers(team)) {
+				if (getAlivePlayers().contains(player)) {
+					if (!te.contains(team)) {
+						te.add(team);
+					}
+				}
+			}
+		}
+		return te;
+	}
+
+	public void addSpectator(Player player) {
 		player.setGameMode(GameMode.SPECTATOR);
 		spectators.add(player.getUniqueId());
 		player.sendMessage(Util.colorize("&cYou are now spectating!"));
+	}
+
+	public void removeSpectator(Player player) {
+		Util.resetPlayer(player);
+		player.teleport(ConfigManager.getLobbySpawn());
+		spectators.remove(player.getUniqueId());
+		player.sendMessage(Util.colorize("&cYou are no longer spectating!"));
+	}
+
+	public ArrayList<Player> getSpectators() {
+		ArrayList<Player> pl = new ArrayList<>();
+		for (UUID uuid : spectators) {
+			pl.add(Bukkit.getPlayer(uuid));
+		}
+		return pl;
+	}
+
+	public ArrayList<Player> getAllPlayers() {
+		ArrayList<Player> pl = new ArrayList<>(getAlivePlayers());
+		pl.addAll(getSpectators());
+		return pl;
 	}
 
 	public boolean sameTeam(Player x, Player y) {

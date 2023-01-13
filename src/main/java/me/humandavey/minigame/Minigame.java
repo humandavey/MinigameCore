@@ -1,7 +1,9 @@
 package me.humandavey.minigame;
 
-import me.humandavey.minigame.command.commands.*;
-import me.humandavey.minigame.listener.*;
+import me.humandavey.minigame.command.commands.ArenaCommand;
+import me.humandavey.minigame.command.commands.StartCommand;
+import me.humandavey.minigame.command.commands.StopCommand;
+import me.humandavey.minigame.listener.ManageListener;
 import me.humandavey.minigame.manager.ArenaManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

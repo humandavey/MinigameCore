@@ -9,7 +9,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Minigame</name>
+    <name>MinigameCore</name>
 
     <properties>
         <java.version>17</java.version>
@@ -49,7 +49,7 @@
                 <version>3.2.2</version>
                 <configuration>
                     <finalName>${project.name}-${project.version}</finalName>
-                    <outputDirectory>C:\Users\davey\Documents\Programming\Minecraft\Bedwars\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\davey\Documents\Programming\Minecraft\Darta Network\plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

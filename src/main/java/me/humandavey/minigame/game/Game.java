@@ -15,7 +15,6 @@ public abstract class Game implements Listener {
 
 	public Game(Arena arena) {
 		this.arena = arena;
-		Bukkit.getPluginManager().registerEvents(this, Minigame.getInstance());
 	}
 
 	public void start() {
@@ -32,6 +31,7 @@ public abstract class Game implements Listener {
 		for (Player player : arena.getPlayers()) {
 			Util.resetPlayer(player);
 		}
+		Bukkit.getPluginManager().registerEvents(this, Minigame.getInstance());
 
 		onStart();
 	}
@@ -48,7 +48,7 @@ public abstract class Game implements Listener {
 		arena.sendMessage(Util.colorize("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
 
 		for (Player player : arena.getAlivePlayers()) {
-			arena.setSpectator(player);
+			arena.addSpectator(player);
 		}
 
 		Bukkit.getScheduler().runTaskLater(Minigame.getInstance(), (e) -> {
@@ -67,7 +67,7 @@ public abstract class Game implements Listener {
 
 		for (Player player : arena.getAlivePlayers()) {
 			if (player != winner) {
-				arena.setSpectator(player);
+				arena.addSpectator(player);
 			}
 		}
 
@@ -92,7 +92,7 @@ public abstract class Game implements Listener {
 
 		for (Player player : arena.getAlivePlayers()) {
 			if (arena.getTeam(player) != winner) {
-				arena.setSpectator(player);
+				arena.addSpectator(player);
 			}
 		}
 

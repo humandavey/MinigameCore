@@ -27,12 +27,14 @@ public class Util {
 		for (PotionEffect pe : player.getActivePotionEffects()) {
 			player.removePotionEffect(pe.getType());
 		}
+		player.setSaturation(3);
+		player.setFireTicks(0);
 		player.setExp(0);
 		player.setLevel(0);
 		player.setTotalExperience(0);
 		player.setAllowFlight(false);
 		player.setAbsorptionAmount(0);
-		player.resetTitle();
+		player.setFallDistance(0);
 	}
 
 	public static List<String> colorizeList(List<String> list) {

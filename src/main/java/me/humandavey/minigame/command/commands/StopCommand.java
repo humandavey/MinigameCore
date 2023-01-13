@@ -21,14 +21,24 @@ public class StopCommand extends Command {
 				try {
 					id = Integer.parseInt(args[0]);
 				} catch (NumberFormatException e) {
-					player.sendMessage(Util.colorize("&cThat is not a valid arena ID!"));
+					if (args[0].equalsIgnoreCase("now")) {
+						Arena arena = Minigame.getInstance().getArenaManager().getArena(player);
+						if (arena != null) {
+							if (arena.getState() == GameState.LIVE) {
+								player.sendMessage(Util.colorize("&aStopping arena... Use with caution!"));
+								arena.reset(true);
+							}
+						}
+					} else {
+						player.sendMessage(Util.colorize("&cThat is not a valid arena ID!"));
+					}
 					return;
 				}
 				Arena arena = Minigame.getInstance().getArenaManager().getArena(id);
 				if (arena != null) {
 					if (arena.getState() == GameState.LIVE) {
 						player.sendMessage(Util.colorize("&aStopping arena... Use with caution!"));
-						arena.reset(true);
+						arena.getGame().end();
 					} else {
 						player.sendMessage(Util.colorize("&cYou cannot do this right now!"));
 					}
@@ -40,7 +50,7 @@ public class StopCommand extends Command {
 				if (arena != null) {
 					if (arena.getState() == GameState.LIVE) {
 						player.sendMessage(Util.colorize("&aStopping arena... Use with caution!"));
-						arena.reset(true);
+						arena.getGame().end();
 					} else {
 						player.sendMessage(Util.colorize("&cYou cannot do this right now!"));
 					}

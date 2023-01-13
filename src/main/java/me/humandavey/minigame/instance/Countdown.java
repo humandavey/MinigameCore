@@ -11,6 +11,7 @@ public class Countdown extends BukkitRunnable {
 	private Arena arena;
 	private int countdownSeconds;
 	private boolean cancel;
+	private boolean isRunning;
 
 	public Countdown(Arena arena) {
 		this.arena = arena;
@@ -22,16 +23,18 @@ public class Countdown extends BukkitRunnable {
 		runTaskTimer(Minigame.getInstance(), 0, 20);
 	}
 
-	public void setCountdownSeconds(int countdownSeconds) {
-		this.countdownSeconds = countdownSeconds;
+	public void setCancel(boolean cancel) {
+		this.cancel = cancel;
 	}
 
 	@Override
 	public void run() {
+		isRunning = true;
 		if (countdownSeconds == 0 || cancel) {
 			arena.sendTitle(Util.colorize("&aGO!"), "", 0, 20, 15);
 			cancel();
 			arena.start();
+			isRunning = false;
 			return;
 		}
 
@@ -47,5 +50,9 @@ public class Countdown extends BukkitRunnable {
 		}
 
 		countdownSeconds--;
+	}
+
+	public boolean isRunning() {
+		return isRunning;
 	}
 }
