@@ -91,7 +91,7 @@ public class WaterClutcherGame extends Game {
 	@EventHandler
 	public void onWaterFlow(BlockFromToEvent event) {
 		if (event.getBlock().isLiquid() && waters.contains(event.getBlock())) {
-			event.setCancelled(true);
+			event.setCancelled(true );
 		}
 	}
 }
