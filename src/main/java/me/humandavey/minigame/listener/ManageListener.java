@@ -4,6 +4,7 @@ import me.humandavey.minigame.Minigame;
 import me.humandavey.minigame.game.GameState;
 import me.humandavey.minigame.instance.Arena;
 import me.humandavey.minigame.manager.ConfigManager;
+import me.humandavey.minigame.manager.NametagManager;
 import me.humandavey.minigame.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +22,9 @@ public class ManageListener implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Util.resetPlayer(event.getPlayer());
 		event.getPlayer().teleport(ConfigManager.getLobbySpawn());
+
+		NametagManager.createTeam(event.getPlayer());
+		NametagManager.setPrefix(event.getPlayer(), "");
 	}
 
 	@EventHandler
@@ -30,6 +34,7 @@ public class ManageListener implements Listener {
 			arena.removePlayer(event.getPlayer());
 			arena.removeSpectator(event.getPlayer());
 		}
+		NametagManager.setPrefix(event.getPlayer(), "");
 	}
 
 	@EventHandler
@@ -37,7 +42,7 @@ public class ManageListener implements Listener {
 		if (event.getEntity() instanceof Player victim && event.getDamager() instanceof Player attacker) {
 			Arena victimArena = Minigame.getInstance().getArenaManager().getArena(victim);
 			Arena attackerArena = Minigame.getInstance().getArenaManager().getArena(attacker);
-			if (victimArena == attackerArena) {
+			if (victim != null && victimArena == attackerArena) {
 				if (victimArena.sameTeam(victim, attacker)) {
 					event.setCancelled(true);
 					attacker.sendMessage(Util.colorize("&cYou cannot attack your teammates!"));

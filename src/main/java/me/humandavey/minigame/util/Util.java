@@ -1,5 +1,6 @@
 package me.humandavey.minigame.util;
 
+import me.humandavey.minigame.manager.NametagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -27,7 +28,9 @@ public class Util {
 		for (PotionEffect pe : player.getActivePotionEffects()) {
 			player.removePotionEffect(pe.getType());
 		}
-		player.setSaturation(3);
+		NametagManager.setPrefix(player, "");
+		NametagManager.setSuffix(player, "");
+		NametagManager.setNameColor(player, ChatColor.RESET);
 		player.setFireTicks(0);
 		player.setExp(0);
 		player.setLevel(0);

@@ -50,8 +50,9 @@ public class WaterClutcherGame extends Game {
 	public void onHit(EntityDamageByEntityEvent event) {
 		if (event.getEntity() instanceof Player victim && event.getDamager() instanceof Player attacker) {
 			if (arena.getPlayers().contains(victim) && arena.getPlayers().contains(attacker)) {
-				victim.setVelocity(victim.getVelocity().multiply(knockback.get(victim)));
+				victim.setVelocity(attacker.getLocation().getDirection().setY(0).normalize().multiply(knockback.get(victim)));
 				knockback.replace(victim, knockback.get(victim) + 0.1);
+				event.setDamage(0);
 			}
 		}
 	}
@@ -59,15 +60,18 @@ public class WaterClutcherGame extends Game {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		if (arena.getPlayers().contains(event.getEntity())) {
+			event.getEntity().spigot().respawn();
 			arena.addSpectator(event.getEntity());
 			event.setDeathMessage(null);
 			for (Player player : arena.getAllPlayers()) {
 				if (event.getEntity().getKiller() == null) {
-					player.sendMessage(Util.colorize("&7" + event.getEntity().getName() + " has died!"));
+					player.sendMessage(Util.colorize("&7" + arena.getTeam(event.getEntity()).getColor() + event.getEntity().getName() + " &ehas died!"));
 				} else {
-					player.sendMessage(Util.colorize("&7" + event.getEntity().getName() + " &ewas killed by &7" + event.getEntity().getKiller() + "&e!"));
+					player.sendMessage(Util.colorize("&7" + arena.getTeam(event.getEntity()).getColor() + event.getEntity().getName() + " &ewas killed by &7" + arena.getTeam(event.getEntity().getKiller()).getColor() + event.getEntity().getKiller().getName() + "&e!"));
 				}
 			}
+			event.getDrops().clear();
+			event.setDroppedExp(0);
 			if (arena.getAliveTeams().size() <= 1) {
 				end(arena.getTeam(arena.getAlivePlayers().get(0)));
 			}
@@ -91,7 +95,7 @@ public class WaterClutcherGame extends Game {
 	@EventHandler
 	public void onWaterFlow(BlockFromToEvent event) {
 		if (event.getBlock().isLiquid() && waters.contains(event.getBlock())) {
-			event.setCancelled(true );
+			event.setCancelled(true);
 		}
 	}
 }

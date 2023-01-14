@@ -2,9 +2,11 @@ package me.humandavey.minigame.game;
 
 import me.humandavey.minigame.Minigame;
 import me.humandavey.minigame.instance.Arena;
+import me.humandavey.minigame.manager.NametagManager;
 import me.humandavey.minigame.team.Team;
 import me.humandavey.minigame.util.Util;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -30,6 +32,8 @@ public abstract class Game implements Listener {
 
 		for (Player player : arena.getPlayers()) {
 			Util.resetPlayer(player);
+			NametagManager.setPrefix(player, arena.getTeam(player).getDisplay().substring(0, 3) + " &7| ");
+			NametagManager.setNameColor(player, ChatColor.getByChar(arena.getTeam(player).getDisplay().substring(1, 2)));
 		}
 		Bukkit.getPluginManager().registerEvents(this, Minigame.getInstance());
 
