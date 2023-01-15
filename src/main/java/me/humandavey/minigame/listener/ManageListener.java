@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -53,6 +54,18 @@ public class ManageListener implements Listener {
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player player) {
+			Arena arena = Minigame.getInstance().getArenaManager().getArena(player);
+			if (arena != null) {
+				if (arena.getState() != GameState.LIVE) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onHungerChange(FoodLevelChangeEvent event) {
 		if (event.getEntity() instanceof Player player) {
 			Arena arena = Minigame.getInstance().getArenaManager().getArena(player);
 			if (arena != null) {

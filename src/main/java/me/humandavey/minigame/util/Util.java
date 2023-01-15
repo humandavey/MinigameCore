@@ -19,8 +19,10 @@ import java.util.regex.Pattern;
 public class Util {
 
 	public static void resetPlayer(Player player) {
+		player.closeInventory();
 		player.setGameMode(GameMode.SURVIVAL);
-		player.setHealth(player.getMaxHealth());
+		player.setMaxHealth(20);
+		player.setHealth(20);
 		player.setFoodLevel(20);
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(new ItemStack[4]);
@@ -41,6 +43,14 @@ public class Util {
 	}
 
 	public static List<String> colorizeList(List<String> list) {
+		List<String> strings = new ArrayList<>();
+		for (String s : list) {
+			strings.add(colorize(s));
+		}
+		return strings;
+	}
+
+	public static List<String> colorizeList(String... list) {
 		List<String> strings = new ArrayList<>();
 		for (String s : list) {
 			strings.add(colorize(s));

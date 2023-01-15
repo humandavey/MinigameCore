@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -60,7 +61,12 @@ public class WaterClutcherGame extends Game {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		if (arena.getPlayers().contains(event.getEntity())) {
-			event.getEntity().spigot().respawn();
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					event.getEntity().spigot().respawn();
+				}
+			}.runTaskLater(Minigame.getInstance(), 1L);
 			arena.addSpectator(event.getEntity());
 			event.setDeathMessage(null);
 			for (Player player : arena.getAllPlayers()) {
@@ -72,8 +78,10 @@ public class WaterClutcherGame extends Game {
 			}
 			event.getDrops().clear();
 			event.setDroppedExp(0);
-			if (arena.getAliveTeams().size() <= 1) {
+			if (arena.getAliveTeams().size() == 1) {
 				end(arena.getTeam(arena.getAlivePlayers().get(0)));
+			} else if (arena.getAliveTeams().size() < 1) {
+				end();
 			}
 		}
 	}
@@ -95,6 +103,13 @@ public class WaterClutcherGame extends Game {
 	@EventHandler
 	public void onWaterFlow(BlockFromToEvent event) {
 		if (event.getBlock().isLiquid() && waters.contains(event.getBlock())) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onHungerChange(FoodLevelChangeEvent event) {
+		if (arena.getPlayers().contains((Player) event.getEntity())) {
 			event.setCancelled(true);
 		}
 	}
