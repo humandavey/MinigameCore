@@ -32,8 +32,8 @@ public abstract class Game implements Listener {
 
 		for (Player player : arena.getPlayers()) {
 			Util.resetPlayer(player);
-			NametagManager.setPrefix(player, arena.getTeam(player).getDisplay().substring(0, 3) + " &7| ");
-			NametagManager.setNameColor(player, ChatColor.getByChar(arena.getTeam(player).getDisplay().substring(1, 2)));
+			NametagManager.setPrefix(player, Util.colorize(arena.getTeam(player).getDisplay().substring(0, 3) + " &7| "));
+			NametagManager.setColor(player, ChatColor.getByChar(arena.getTeam(player).getDisplay().substring(1, 2)));
 		}
 		Bukkit.getPluginManager().registerEvents(this, Minigame.getInstance());
 

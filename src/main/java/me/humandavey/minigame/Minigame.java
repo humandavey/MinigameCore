@@ -6,6 +6,7 @@ import me.humandavey.minigame.command.commands.StartCommand;
 import me.humandavey.minigame.command.commands.StopCommand;
 import me.humandavey.minigame.listener.ManageListener;
 import me.humandavey.minigame.manager.ArenaManager;
+import me.humandavey.minigame.manager.NametagManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Minigame extends JavaPlugin {
@@ -39,6 +40,7 @@ public final class Minigame extends JavaPlugin {
 
 	private void registerListeners() {
 		getServer().getPluginManager().registerEvents(new ManageListener(), this);
+		getServer().getPluginManager().registerEvents(new NametagManager(), this);
 	}
 
 	private void registerCommands() {

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +33,7 @@ public class Util {
 		}
 		NametagManager.setPrefix(player, "");
 		NametagManager.setSuffix(player, "");
-		NametagManager.setNameColor(player, ChatColor.RESET);
+		NametagManager.setColor(player, ChatColor.RESET);
 		player.setFireTicks(0);
 		player.setExp(0);
 		player.setLevel(0);
@@ -40,6 +41,15 @@ public class Util {
 		player.setAllowFlight(false);
 		player.setAbsorptionAmount(0);
 		player.setFallDistance(0);
+	}
+
+	public static String getDate() {
+		String date = "";
+		String unformatted = LocalDate.now().toString().replaceAll("-", "/");
+		date += unformatted.substring(5, 7) + "/";
+		date += unformatted.substring(8) + "/";
+		date += unformatted.substring(0, 4);
+		return date;
 	}
 
 	public static List<String> colorizeList(List<String> list) {

@@ -5,6 +5,7 @@ import me.humandavey.minigame.game.Game;
 import me.humandavey.minigame.game.GameState;
 import me.humandavey.minigame.game.GameType;
 import me.humandavey.minigame.manager.ConfigManager;
+import me.humandavey.minigame.manager.ScoreboardManager;
 import me.humandavey.minigame.team.Team;
 import me.humandavey.minigame.util.Util;
 import org.bukkit.Bukkit;
@@ -23,9 +24,9 @@ public class Arena {
 	private final GameType gameType;
 
 	private GameState gameState;
-	private ArrayList<UUID> players;
-	private ArrayList<UUID> spectators;
-	private HashMap<UUID, Team> teams;
+	private final ArrayList<UUID> players;
+	private final ArrayList<UUID> spectators;
+	private final HashMap<UUID, Team> teams;
 	private Countdown countdown;
 	private Game game;
 
@@ -52,10 +53,12 @@ public class Arena {
 			for (Player player : getPlayers()) {
 				player.teleport(ConfigManager.getLobbySpawn());
 				Util.resetPlayer(player);
+				ScoreboardManager.removeScoreboard(player);
 			}
 			for (UUID uuid : spectators) {
 				Bukkit.getPlayer(uuid).teleport(ConfigManager.getLobbySpawn());
 				Util.resetPlayer(Bukkit.getPlayer(uuid));
+				ScoreboardManager.removeScoreboard(Bukkit.getPlayer(uuid));
 			}
 			players.clear();
 			teams.clear();
@@ -75,6 +78,8 @@ public class Arena {
 			players.add(player.getUniqueId());
 			player.teleport(spawn);
 			Util.resetPlayer(player);
+			ScoreboardManager.setScoreboard(player, gameType.getDisplay().toUpperCase(),
+					Util.colorize("&7" + Util.getDate())); // finish countdown scoreboard
 			sendMessage(Util.colorize("&7" + player.getName() + " &ehas joined (&b" + players.size() + "&e/&b" + gameType.getMaxPlayers() + "&e)!"));
 
 			TreeMultimap<Integer, Team> count = TreeMultimap.create();
@@ -101,6 +106,7 @@ public class Arena {
 
 		removeTeam(player);
 		Util.resetPlayer(player);
+		ScoreboardManager.removeScoreboard(player);
 
 		if (gameState == GameState.COUNTDOWN && numTeamsWithMoreThan(0) < gameType.getMinTeams()) {
 			sendMessage(Util.colorize("&cNot enough teams to continue, countdown stopped!"));

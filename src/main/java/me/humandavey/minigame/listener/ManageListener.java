@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -24,7 +25,6 @@ public class ManageListener implements Listener {
 		Util.resetPlayer(event.getPlayer());
 		event.getPlayer().teleport(ConfigManager.getLobbySpawn());
 
-		NametagManager.createTeam(event.getPlayer());
 		NametagManager.setPrefix(event.getPlayer(), "");
 	}
 
@@ -93,6 +93,15 @@ public class ManageListener implements Listener {
 			if (arena.getState() != GameState.LIVE) {
 				event.setCancelled(true);
 			}
+		}
+	}
+
+	@EventHandler
+	public void onChat(AsyncPlayerChatEvent event) {
+		Arena arena = Minigame.getInstance().getArenaManager().getArena(event.getPlayer());
+		if (arena != null) {
+			event.setCancelled(true);
+			arena.sendMessage(Util.colorize("&7[" + arena.getTeam(event.getPlayer()).getDisplay() + "&7] " + arena.getTeam(event.getPlayer()).getColor() + event.getPlayer().getName() + "&f: " + event.getMessage()));
 		}
 	}
 }
