@@ -75,4 +75,11 @@ public class ItemBuilder {
 		meta.setLore(l);
 		return this;
 	}
+
+	public ItemBuilder setLore(String prefix, String... lore) {
+		List<String> l = new ArrayList<>(Arrays.asList(lore));
+		l.add(0, prefix);
+		meta.setLore(l);
+		return this;
+	}
 }
