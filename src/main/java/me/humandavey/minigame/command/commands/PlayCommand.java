@@ -26,7 +26,7 @@ public class PlayCommand extends Command {
 			if (args.length == 0) {
 				Menu menu = new Menu("Game Selector", 3);
 
-				// TODO: Make this scale with new games from GameType
+				// TODO: Make this scale with new games from GameType dynamically
 
 				ArrayList<String> l = new ArrayList<>(List.of(GameType.WATERCLUTCHER.getFormattedDescription(ChatColor.GRAY)));
 				l.add(0, "");
