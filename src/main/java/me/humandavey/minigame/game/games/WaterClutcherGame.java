@@ -87,7 +87,7 @@ public class WaterClutcherGame extends Game {
 				} else {
 					player.sendMessage(Util.colorize("&7" + arena.getTeam(event.getEntity()).getColor() + event.getEntity().getName() + " &ewas killed by &7" + arena.getTeam(event.getEntity().getKiller()).getColor() + event.getEntity().getKiller().getName() + "&e!"));
 
-					kills.remove(player.getKiller(), kills.get(player.getKiller()) + 1);
+					kills.put(player.getKiller(), kills.get(player.getKiller()) + 1);
 					ScoreboardManager.updateLine(player.getKiller(), 3, "&fKills: &e" + kills.get(player.getKiller()));
 				}
 			}
