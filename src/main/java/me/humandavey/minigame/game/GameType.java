@@ -1,6 +1,6 @@
 package me.humandavey.minigame.game;
 
-import me.humandavey.minigame.game.games.WaterClutcherGame;
+import me.humandavey.minigame.game.games.*;
 import me.humandavey.minigame.instance.Arena;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
