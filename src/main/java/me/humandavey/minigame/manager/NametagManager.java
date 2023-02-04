@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -69,6 +70,14 @@ public class NametagManager implements Listener {
 		}
 	}
 
+	public static void update() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (!scoreboards.containsKey(player.getUniqueId())) {
+				scoreboards.put(player.getUniqueId(), player.getScoreboard());
+			}
+		}
+	}
+
 	public static void setPrefix(Player player, String prefix) {
 		for (UUID uuid : scoreboards.keySet()) {
 			scoreboards.get(uuid).getTeam(player.getName() + "#" + uuid.toString()).setPrefix(prefix);
@@ -87,7 +96,7 @@ public class NametagManager implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event) {
 		addPlayer(event.getPlayer());
 	}

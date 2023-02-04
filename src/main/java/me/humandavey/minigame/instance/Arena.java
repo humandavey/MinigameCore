@@ -78,8 +78,12 @@ public class Arena {
 			players.add(player.getUniqueId());
 			player.teleport(spawn);
 			Util.resetPlayer(player);
-			ScoreboardManager.setScoreboard(player, gameType.getDisplay().toUpperCase(),
-					Util.colorize("&7" + Util.getDate())); // finish countdown scoreboard
+			ScoreboardManager.setScoreboard(player, Util.colorize("&e&l" + gameType.getDisplay().toUpperCase()),
+					Util.colorize("&7" + Util.getDate()),
+					"",
+					Util.colorize("&fWaiting for players..."),
+					" ",
+					Util.colorize("&ewww.dartanetwork.net"));
 			sendMessage(Util.colorize("&7" + player.getName() + " &ehas joined (&b" + players.size() + "&e/&b" + gameType.getMaxPlayers() + "&e)!"));
 
 			TreeMultimap<Integer, Team> count = TreeMultimap.create();
@@ -241,8 +245,8 @@ public class Arena {
 	}
 
 	public void sendMessage(String message) {
-		for (UUID uuid : players) {
-			Bukkit.getPlayer(uuid).sendMessage(message);
+		for (Player player : getAllPlayers()) {
+			player.sendMessage(message);
 		}
 	}
 

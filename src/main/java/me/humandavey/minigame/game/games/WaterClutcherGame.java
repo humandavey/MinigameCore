@@ -5,8 +5,6 @@ import me.humandavey.minigame.game.Game;
 import me.humandavey.minigame.instance.Arena;
 import me.humandavey.minigame.manager.ScoreboardManager;
 import me.humandavey.minigame.util.Util;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -43,20 +41,12 @@ public class WaterClutcherGame extends Game {
 			ScoreboardManager.setScoreboard(player, Util.colorize("&e&lWATERCLUTCHER"),
 					Util.colorize("&7" + Util.getDate()),
 					" ",
-					Util.colorize("&fNext Event: &eN/A"),
+					Util.colorize("&fKnockback: &e100%"),
 					"  ",
 					Util.colorize("&fKills: &e0"),
 					"   ",
 					Util.colorize("&ewww.dartanetwork.net"));
 		}
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Player player : arena.getAlivePlayers()) {
-					player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Util.colorize("&eYou are at " + Math.round(knockback.get(player) * 100) + "% knockback!")));
-				}
-			}
-		}.runTaskTimer(Minigame.getInstance(), 0, 20);
 	}
 
 	@EventHandler
@@ -65,6 +55,7 @@ public class WaterClutcherGame extends Game {
 			if (arena.getPlayers().contains(victim) && arena.getPlayers().contains(attacker)) {
 				victim.setVelocity(attacker.getLocation().getDirection().setY(knockback.get(victim) - 1).normalize().multiply(knockback.get(victim)));
 				knockback.replace(victim, knockback.get(victim) + 0.1);
+				ScoreboardManager.updateLine(victim, 2, Util.colorize("&fKnockback: &e" + Math.round(knockback.get(victim) * 100) + "%"));
 				event.setDamage(0);
 			}
 		}
@@ -73,6 +64,8 @@ public class WaterClutcherGame extends Game {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		if (arena.getPlayers().contains(event.getEntity())) {
+			event.getDrops().clear();
+			event.setDroppedExp(0);
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -84,17 +77,16 @@ public class WaterClutcherGame extends Game {
 			for (Player player : arena.getAllPlayers()) {
 				if (event.getEntity().getKiller() == null) {
 					player.sendMessage(Util.colorize("&7" + arena.getTeam(event.getEntity()).getColor() + event.getEntity().getName() + " &ehas died!"));
-				} else {
+				} else if (event.getEntity().getKiller() != null) {
 					player.sendMessage(Util.colorize("&7" + arena.getTeam(event.getEntity()).getColor() + event.getEntity().getName() + " &ewas killed by &7" + arena.getTeam(event.getEntity().getKiller()).getColor() + event.getEntity().getKiller().getName() + "&e!"));
-
-					kills.put(player.getKiller(), kills.get(player.getKiller()) + 1);
-					ScoreboardManager.updateLine(player.getKiller(), 3, "&fKills: &e" + kills.get(player.getKiller()));
+				} else {
+					player.sendMessage(Util.colorize("&7" + arena.getTeam(event.getEntity()).getColor() + event.getEntity().getName() + " &ehas died!"));
 				}
 			}
-			event.getDrops().clear();
-			event.setDroppedExp(0);
+			kills.put(event.getEntity().getKiller(), kills.getOrDefault(event.getEntity().getKiller(), 0) + 1);
+			ScoreboardManager.updateLine(event.getEntity().getKiller(), 4, Util.colorize("&fKills: &e" + kills.get(event.getEntity().getKiller())));
 			if (arena.getAliveTeams().size() == 1) {
-				end(arena.getTeam(arena.getAlivePlayers().get(0)));
+				end(arena.getAliveTeams().get(0));
 			} else if (arena.getAliveTeams().size() < 1) {
 				end();
 			}

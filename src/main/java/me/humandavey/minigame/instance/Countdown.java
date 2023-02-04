@@ -3,6 +3,7 @@ package me.humandavey.minigame.instance;
 import me.humandavey.minigame.Minigame;
 import me.humandavey.minigame.game.GameState;
 import me.humandavey.minigame.manager.ConfigManager;
+import me.humandavey.minigame.manager.ScoreboardManager;
 import me.humandavey.minigame.util.Util;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -45,6 +46,7 @@ public class Countdown extends BukkitRunnable {
 
 		for (Player player : arena.getPlayers()) {
 			player.setLevel(countdownSeconds);
+			ScoreboardManager.updateLine(player, 2, Util.colorize("&fStarting in &e" + countdownSeconds + "&fs!"));
 			player.setExp((float) countdownSeconds / ConfigManager.getCountdownSeconds());
 		}
 

@@ -8,6 +8,7 @@ import me.humandavey.minigame.util.Util;
 import me.humandavey.minigame.util.item.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayCommand extends Command {
@@ -27,10 +28,12 @@ public class PlayCommand extends Command {
 				int slot = 4 - (numGames / 2);
 
 				for (GameType type : GameType.values()) {
-					ItemStack item = new ItemBuilder(type.getIcon()).setItemName(type.getDisplay()).setLore("", type.getFormattedDescription(ChatColor.GRAY)).build();
+					ItemStack item = new ItemBuilder(type.getIcon()).setItemName(Util.colorize("&e" + type.getDisplay())).setLore("", type.getFormattedDescription(ChatColor.GRAY)).addItemFlag(ItemFlag.HIDE_ATTRIBUTES).build();
 					menu.setItemAt(1, slot, item);
 					slot++;
 				}
+
+				// TODO: ADD GAME JOINING FUNCTIONALITY
 
 				menu.open(player);
 			}

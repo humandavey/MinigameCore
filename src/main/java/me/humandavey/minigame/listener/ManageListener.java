@@ -43,7 +43,7 @@ public class ManageListener implements Listener {
 		if (event.getEntity() instanceof Player victim && event.getDamager() instanceof Player attacker) {
 			Arena victimArena = Minigame.getInstance().getArenaManager().getArena(victim);
 			Arena attackerArena = Minigame.getInstance().getArenaManager().getArena(attacker);
-			if (victim != null && victimArena == attackerArena) {
+			if (victimArena != null && victimArena == attackerArena) {
 				if (victimArena.sameTeam(victim, attacker)) {
 					event.setCancelled(true);
 					attacker.sendMessage(Util.colorize("&cYou cannot attack your teammates!"));

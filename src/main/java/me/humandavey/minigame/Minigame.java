@@ -36,6 +36,9 @@ public final class Minigame extends JavaPlugin {
 
 	private void setupManagers() {
 		arenaManager = new ArenaManager();
+
+		// TODO: TEST THIS! (persistent nametags on restart)
+		NametagManager.update();
 	}
 
 	private void registerListeners() {
