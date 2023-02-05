@@ -59,6 +59,9 @@ public class ManageListener implements Listener {
 			if (arena != null) {
 				if (arena.getState() != GameState.LIVE) {
 					event.setCancelled(true);
+					if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+						player.teleport(arena.getSpawn());
+					}
 				}
 			}
 		}

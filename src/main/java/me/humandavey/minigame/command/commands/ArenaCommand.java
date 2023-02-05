@@ -10,7 +10,6 @@ import me.humandavey.minigame.team.Team;
 import me.humandavey.minigame.util.Util;
 import me.humandavey.minigame.util.item.ItemBuilder;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,17 +74,7 @@ public class ArenaCommand extends Command {
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("team")) {
 			Arena arena = Minigame.getInstance().getArenaManager().getArena(player);
 			if (arena != null && (arena.getState() == GameState.WAITING || arena.getState() == GameState.COUNTDOWN)) {
-				Menu menu = new Menu("Team Selection", 3);
-				for (int i = 0; i < arena.getGameType().getNumTeams(); i++) {
-
-					ArrayList<String> lore = new ArrayList<>();
-					for (Player p : arena.getPlayers(Team.values()[i])) {
-						lore.add(Util.colorize("&7- &7" + p.getName()));
-					}
-
-					ItemStack item = new ItemBuilder(Team.values()[i].getIcon()).setItemName(Util.colorize(Team.values()[i].getDisplay() + " &7(" + arena.getTeamCount(Team.values()[i]) + "/" + arena.getGameType().getPlayersPerTeam() + ")")).setLore(lore).build();
-					menu.addItem(item);
-				}
+				Menu menu = arena.getMenu();
 				menu.setOnClick(event -> {
 					event.setCancelled(true);
 					if (event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null) return;

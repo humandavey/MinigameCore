@@ -6,12 +6,15 @@ import me.humandavey.minigame.game.GameState;
 import me.humandavey.minigame.game.GameType;
 import me.humandavey.minigame.manager.ConfigManager;
 import me.humandavey.minigame.manager.ScoreboardManager;
+import me.humandavey.minigame.menu.Menu;
 import me.humandavey.minigame.team.Team;
 import me.humandavey.minigame.util.Util;
+import me.humandavey.minigame.util.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +32,7 @@ public class Arena {
 	private final HashMap<UUID, Team> teams;
 	private Countdown countdown;
 	private Game game;
+	private Menu menu;
 
 	public Arena(int id, Location spawn, GameType gameType) {
 		this.id = id;
@@ -41,6 +45,18 @@ public class Arena {
 		this.teams = new HashMap<>();
 		this.countdown = new Countdown(this);
 		this.game = gameType.getNewInstance(this);
+
+		menu = new Menu("Team Selection", 3);
+		for (int i = 0; i < getGameType().getNumTeams(); i++) {
+
+			ArrayList<String> lore = new ArrayList<>();
+			for (Player p : getPlayers(Team.values()[i])) {
+				lore.add(Util.colorize("&7- &7" + p.getName()));
+			}
+
+			ItemStack item = new ItemBuilder(Team.values()[i].getIcon()).setItemName(Util.colorize(Team.values()[i].getDisplay() + " &7(" + getTeamCount(Team.values()[i]) + "/" + getGameType().getPlayersPerTeam() + ")")).setLore(lore).build();
+			menu.addItem(item);
+		}
 	}
 
 	public void start() {
@@ -262,6 +278,10 @@ public class Arena {
 		}
 	}
 
+	public Menu getMenu() {
+		return menu;
+	}
+
 	public int getID() {
 		return id;
 	}
@@ -284,6 +304,10 @@ public class Arena {
 			players.add(Bukkit.getPlayer(uuid));
 		}
 		return players;
+	}
+
+	public Location getSpawn() {
+		return spawn;
 	}
 
 	public void setState(GameState gameState) {
