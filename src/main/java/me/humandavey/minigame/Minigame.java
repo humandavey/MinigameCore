@@ -1,7 +1,6 @@
 package me.humandavey.minigame;
 
 import me.humandavey.minigame.command.commands.ArenaCommand;
-import me.humandavey.minigame.command.commands.PlayCommand;
 import me.humandavey.minigame.command.commands.StartCommand;
 import me.humandavey.minigame.command.commands.StopCommand;
 import me.humandavey.minigame.listener.ManageListener;
@@ -37,7 +36,6 @@ public final class Minigame extends JavaPlugin {
 	private void setupManagers() {
 		arenaManager = new ArenaManager();
 
-		// TODO: TEST THIS! (persistent nametags on restart)
 		NametagManager.update();
 	}
 
@@ -50,7 +48,6 @@ public final class Minigame extends JavaPlugin {
 		new ArenaCommand();
 		new StartCommand();
 		new StopCommand();
-		new PlayCommand();
 	}
 
 	public ArenaManager getArenaManager() {
