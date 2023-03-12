@@ -10,7 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 public enum GameType {
 
 	WATERCLUTCHER("WaterClutcher", 2, 8, 8, new String[]{"Try not to die from fall damage", "while being the last player alive!"}, Material.WATER_BUCKET, WaterClutcherGame.class),
-	FFA("FFA", 2, 16, 16, new String[]{"Last player standing wins!"}, Material.DIAMOND_AXE, FFAGame.class);
+	FFA("FFA", 2, 16, 16, new String[]{"Last player standing wins!"}, Material.DIAMOND_AXE, FFAGame.class),
+	TNTRUN("TNT Run", 2, 8, 8, new String[]{"Don't fall to", "the bottom layer", "while escaping everyone else"}, Material.TNT, TNTRunGame.class);
 
 	private final String display;
 	private final int minTeams;
